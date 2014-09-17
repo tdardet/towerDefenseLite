@@ -1,0 +1,1 @@
+"""Pathfinding algorithm for 2-degrees of freedom (vertical, horizontal?) grid maze in python3"""
