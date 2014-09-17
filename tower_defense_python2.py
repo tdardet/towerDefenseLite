@@ -1,10 +1,12 @@
-"""Starts Python 3.4 Tower Defense game by Tomas Dardet, requires tkinter"""
+"""Starts Python 2.7 Tower Defense game by Tomas Dardet, requires Tkinter and
+    Pillow (install using: pip install pillow)
+"""
 #Created by: Tomas J. Dardet Preston
 #Copyright Tomas Dardet 2014
 
-#This game was developed on Python 3.4.0
+#This game was developed on Python 2.7.8
 
-#It may work with other versions of python 3
+#It may work with other versions of python 2
 #@!requires files(grayTower.png; grayTowerDisabled2.png;
 #               redTower.png; redTowerDisabled1.png;
 #               yellowTower.png; yellowTowerDisabled3.png;
@@ -15,9 +17,9 @@
 #############################  TERM PROJECT  ###################################
 ############################ TowerDefense LITE #################################
 ################################################################################
-from tkinter import *
-import random
+from Tkinter import *
 import math
+from PIL import ImageTk
 
 global canvas
 root = Tk()
@@ -219,15 +221,15 @@ def init(map_index):
     canvas.data.makeCreep = 0 ###
 
     ## Images for tower UI
-    canvas.data.redTower = PhotoImage(file="redTower.png")
-    canvas.data.redTowerDisabled = PhotoImage(file="redTowerDisabled1.png")
-    canvas.data.yellowTower = PhotoImage(file="yellowTower.png")
-    canvas.data.yellowTowerDisabled = PhotoImage(
+    canvas.data.redTower = ImageTk.PhotoImage(file="redTower.png")
+    canvas.data.redTowerDisabled = ImageTk.PhotoImage(file="redTowerDisabled1.png")
+    canvas.data.yellowTower = ImageTk.PhotoImage(file="yellowTower.png")
+    canvas.data.yellowTowerDisabled = ImageTk.PhotoImage(
         file="yellowTowerDisabled3.png")
-    canvas.data.grayTower = PhotoImage(file="grayTower.png")
-    canvas.data.grayTowerDisabled = PhotoImage(file="grayTowerDisabled2.png")
-    canvas.data.whiteTower = PhotoImage(file="whiteTower.png")
-    canvas.data.whiteTowerDisabled = PhotoImage(file="whiteTowerDisabled4.png")
+    canvas.data.grayTower = ImageTk.PhotoImage(file="grayTower.png")
+    canvas.data.grayTowerDisabled = ImageTk.PhotoImage(file="grayTowerDisabled2.png")
+    canvas.data.whiteTower = ImageTk.PhotoImage(file="whiteTower.png")
+    canvas.data.whiteTowerDisabled = ImageTk.PhotoImage(file="whiteTowerDisabled4.png")
     canvas.data.imageTower = [canvas.data.redTower, canvas.data.grayTower,
                               canvas.data.yellowTower, canvas.data.whiteTower]
     canvas.data.disabledTower = [canvas.data.redTowerDisabled,
@@ -270,8 +272,8 @@ def doMousePressedTowerPlacement(event):
     if pressedTowerIndex == None:
         return
     pressedTowerCost = canvas.data.pressedTowerCost[pressedTowerIndex]
-    for row in range(len(canvas.data.currentMap)):
-        for col in range(len(canvas.data.currentMap[0])):
+    for row in xrange(len(canvas.data.currentMap)):
+        for col in xrange(len(canvas.data.currentMap[0])):
             if ((event.x < (col+1)*cellW + xAjust)
                     and (event.x > col*cellW + xAjust) # where you click
                     and (event.y < (row+1)*cellH + yAjust) #square check
@@ -300,7 +302,7 @@ def doMousePressedTowerMaker(event):
     imageSpacing = 60
     x0 = canvas.data.spaceBorderUI + 3
     x1 = x0 + 43
-    for i in range(len(canvas.data.imageTower)):
+    for i in xrange(len(canvas.data.imageTower)):
         y0 = canvas.data.canvasHeight/1.7 + imageSpacing*i + x0 - 20
         y1 = y0 + 45
         if event.x > x0 and event.x < x1 and event.y > y0 and event.y < y1:
@@ -361,7 +363,7 @@ def pauseGame():
 
 def moveCreeps(creeps):
     #creeps =[[cX, cY, dx, dy, radius, speed, color, health, score, timesMoved]]
-    for creep in range(len(creeps)):
+    for creep in xrange(len(creeps)):
         cX = creeps[creep][0]
         cY = creeps[creep][1]
         dx = creeps[creep][2]
@@ -426,8 +428,8 @@ def isMoveLegal(cX, cY, dx, dy, radius):
     x1Creep = newXCenter + radius + healthBar
     y0Creep = newYCenter - radius - healthBar
     y1Creep = newYCenter + radius + healthBar
-    for row in range(len(canvas.data.currentMap)):
-        for col in range(len(canvas.data.currentMap[0])):
+    for row in xrange(len(canvas.data.currentMap)):
+        for col in xrange(len(canvas.data.currentMap[0])):
             if (canvas.data.currentMap[row][col] == 0 or
                     canvas.data.currentMap[row][col] > 3):
                 x0 = canvas.data.spaceUI + canvas.data.cellWidth*col
@@ -453,7 +455,7 @@ def removeCreep():
     leftEdge = canvas.data.spaceUI
     rightEdge = canvas.data.canvasWidth
     bottomEdge = canvas.data.canvasHeight
-    for creep in range(len(canvas.data.creeps)):
+    for creep in xrange(len(canvas.data.creeps)):
         cX = canvas.data.creeps[creep][0]
         cY = canvas.data.creeps[creep][1]
         radius = canvas.data.creeps[creep][4]
@@ -469,7 +471,7 @@ def removeCreep():
             discardCreeps.append(canvas.data.creeps[creep])
             canvas.data.score += score
             canvas.data.money += money
-    for remove in range(len(discardCreeps)):
+    for remove in xrange(len(discardCreeps)):
         canvas.data.creeps.remove(discardCreeps[remove])
     if canvas.data.lives < 1:
         canvas.data.gameOver = True
@@ -478,7 +480,7 @@ def removeCreep():
 def drawCreeps(creeps): #takes in 2dList of creeps
     ## creeps = [[cX,cY,dx,dy,radius,speed,color,health,score,timesMoved]]
     if len(creeps) > 0:
-        for creep in range(len(creeps)):
+        for creep in xrange(len(creeps)):
             cX = creeps[creep][0]
             cY = creeps[creep][1]
             radius = creeps[creep][4]
@@ -498,7 +500,7 @@ def makeWaveCreeps(creepList, count):
 def makeWaveCreepList(creepQuantity):
     canvas.data.creepMakingList = []
     countIndex = 0
-    for index in range(len(creepQuantity)):
+    for index in xrange(len(creepQuantity)):
         while countIndex < creepQuantity[index]:
             canvas.data.creepMakingList.append(index)
             countIndex += 1
@@ -509,8 +511,8 @@ def makeNewCreepAtStart(indexOfTypeOfCreep, wave):
     # searching for 2 in the 2dList because it denotes the start
     if indexOfTypeOfCreep == None:
         return
-    for row in range(canvas.data.rows):
-        for col in range(canvas.data.cols):
+    for row in xrange(canvas.data.rows):
+        for col in xrange(canvas.data.cols):
             if canvas.data.currentMap[row][col] == 2:
                 makeNewCreep(row, col, indexOfTypeOfCreep, wave)
 
@@ -538,8 +540,8 @@ def makeNewCreep(row, col, index, wave):
 ################################################################################
 
 def towersThatShoot():
-    for row in range(len(canvas.data.currentMap)):
-        for col in range(len(canvas.data.currentMap[0])):
+    for row in xrange(len(canvas.data.currentMap)):
+        for col in xrange(len(canvas.data.currentMap[0])):
             cX = (2*col +1)*canvas.data.cellWidth/2 + canvas.data.spaceUI
             cY = (2*row +1)*canvas.data.cellHeight/2 + canvas.data.border
             if canvas.data.currentMap[row][col] == 4:
@@ -558,7 +560,7 @@ def makeFirstTowerShots(cX0, cY0, towerType):
     towerRange = canvas.data.towerRange[towerType]
     listCreep = []
     listCreepDistance = []
-    for creep in range(len(canvas.data.creeps)):
+    for creep in xrange(len(canvas.data.creeps)):
         cX = canvas.data.creeps[creep][0]
         cY = canvas.data.creeps[creep][1]
         if math.sqrt((cX0 - cX)**2+(cY0 - cY)**2) < towerRange:
@@ -602,7 +604,7 @@ def findFurthestCreepIndex(listIndeces, listDistances):
     listDistanceCopy = listDistances + []
     largestDistance = 0
     largestDistanceIndex = None
-    for dist in range(len(listDistances)):
+    for dist in xrange(len(listDistances)):
         if listDistanceCopy[dist] > largestDistance:
             largestDistance = listDistanceCopy[dist]
             largestDistanceIndex = listIndeces[dist]
@@ -617,7 +619,7 @@ def makeSecondTowerShots(cX0,cY0,towerType):
     towerRange = canvas.data.towerRange[towerType]
     listCreep = []
     listCreepDistance = []
-    for creep in range(len(canvas.data.creeps)):
+    for creep in xrange(len(canvas.data.creeps)):
         cX = canvas.data.creeps[creep][0]
         cY = canvas.data.creeps[creep][1]
         if math.sqrt((cX0 - cX)**2+(cY0 - cY)**2) < towerRange:
@@ -634,7 +636,7 @@ def makeThirdTowerShots(cX0,cY0,towerType):
     towerRange = canvas.data.towerRange[towerType]
     listCreep = []
     listCreepDistance = []
-    for creep in range(len(canvas.data.creeps)):
+    for creep in xrange(len(canvas.data.creeps)):
         cX = canvas.data.creeps[creep][0]
         cY = canvas.data.creeps[creep][1]
         if math.sqrt((cX0 - cX)**2+(cY0 - cY)**2) < towerRange:
@@ -651,7 +653,7 @@ def makeFourthTowerShots(cX0, cY0, towerType):
     towerRange = canvas.data.towerRange[towerType]
     listCreep = []
     listCreepDistance = []
-    for creep in range(len(canvas.data.creeps)):
+    for creep in xrange(len(canvas.data.creeps)):
         cX = canvas.data.creeps[creep][0]
         cY = canvas.data.creeps[creep][1]
         if math.sqrt((cX0 - cX)**2+(cY0 - cY)**2) < towerRange:
@@ -668,7 +670,7 @@ def drawFourthTowerShots(shotList):
     #type of tower is 0 because it is the first tower
     if len(shotList) < 1:
         return
-    for shot in range(len(shotList)):
+    for shot in xrange(len(shotList)):
         r = shotList[shot][2]
         cX = shotList[shot][0]
         cY = shotList[shot][1]
@@ -686,7 +688,7 @@ def drawFourthTowerShots(shotList):
         canvas.create_polygon(x0, y00, x1, y11, x2, y22, fill=color)
 
 def moveFourthShots(fourthShotList):
-    for shot in range(len(fourthShotList)):
+    for shot in xrange(len(fourthShotList)):
         cX = fourthShotList[shot][0]
         cY = fourthShotList[shot][1]
         dx = fourthShotList[shot][3]
@@ -707,7 +709,7 @@ def removeFourthShotsTest():
     leftEdge = canvas.data.spaceUI + safety
     rightEdge = canvas.data.canvasWidth - safety
     bottomEdge = canvas.data.canvasHeight - safety
-    for shot in range(len(canvas.data.fourthTowerShotList)):
+    for shot in xrange(len(canvas.data.fourthTowerShotList)):
         cX = canvas.data.fourthTowerShotList[shot][0]
         cY = canvas.data.fourthTowerShotList[shot][1]
         radius = canvas.data.fourthTowerShotList[shot][2]
@@ -717,7 +719,7 @@ def removeFourthShotsTest():
         if((int(cX) <= leftEdge) or (int(cY) <= topEdge) or
            (int(cX) >= rightEdge) or (int(cY) >= bottomEdge)):
             discardShots.append(canvas.data.fourthTowerShotList[shot])
-        for creep in range(len(canvas.data.creeps)):
+        for creep in xrange(len(canvas.data.creeps)):
             if (collidedCircle(shot, creep, canvas.data.fourthTowerShotList,
                                canvas.data.creeps) and
                     (canvas.data.fourthTowerShotList[shot] not in
@@ -733,7 +735,7 @@ def moveFirstShots(firstShotList):
     # canvas.data.firstTowerShotList = [[cX,cY,radius,dx,dy,destinationX,
     #                                       destinationY,damageShot,colorShot]]
     #type of tower is 0 because it is the first tower
-    for shot in range(len(firstShotList)):
+    for shot in xrange(len(firstShotList)):
         cX = firstShotList[shot][0]
         cY = firstShotList[shot][1]
         dx = firstShotList[shot][3]
@@ -749,7 +751,7 @@ def drawSecondTowerShots(shotList):
     #type of tower is 0 because it is the first tower
     if len(shotList) < 1:
         return
-    for shot in range(len(shotList)):
+    for shot in xrange(len(shotList)):
         x0 = shotList[shot][0] - shotList[shot][2]
         y0 = shotList[shot][1] - shotList[shot][2]
         x1 = shotList[shot][0] + shotList[shot][2]
@@ -777,7 +779,7 @@ def drawFirstTowerShots(shotList):
     #type of tower is 0 because it is the first tower
     if len(shotList) < 1:
         return
-    for shot in range(len(shotList)):
+    for shot in xrange(len(shotList)):
         x0 = shotList[shot][0] - shotList[shot][2]
         y0 = shotList[shot][1] - shotList[shot][2]
         x1 = shotList[shot][0] + shotList[shot][2]
@@ -798,7 +800,7 @@ def removeFirstShotsTest():
     leftEdge = canvas.data.spaceUI + safety
     rightEdge = canvas.data.canvasWidth - safety
     bottomEdge = canvas.data.canvasHeight - safety
-    for shot in range(len(canvas.data.firstTowerShotList)):
+    for shot in xrange(len(canvas.data.firstTowerShotList)):
         cX = canvas.data.firstTowerShotList[shot][0]
         cY = canvas.data.firstTowerShotList[shot][1]
         radius = canvas.data.firstTowerShotList[shot][2]
@@ -808,7 +810,7 @@ def removeFirstShotsTest():
         if ((int(cX) <= leftEdge) or (int(cY) <= topEdge) or
                 (int(cX) >= rightEdge) or (int(cY) >= bottomEdge)):
             discardShots.append(canvas.data.firstTowerShotList[shot])
-        for creep in range(len(canvas.data.creeps)):
+        for creep in xrange(len(canvas.data.creeps)):
             if (collidedCircle(shot, creep, canvas.data.firstTowerShotList,
                                canvas.data.creeps) and
                     (canvas.data.firstTowerShotList[shot] not in discardShots)):
@@ -840,7 +842,7 @@ def collidedCircleHelper(x, y, d, creep, damageShot):
 
 def drawTowers(towers):
     if len(towers) > 0:
-        for tower in range(len(towers)):
+        for tower in xrange(len(towers)):
             row = towers[tower][0]
             col = towers[tower][1]
             colorOne = towers[tower][2]
@@ -952,7 +954,7 @@ def timerFired():
 
     redrawAll()
     if canvas.data.speedButton:
-        delay = 5 # milliseconds
+        delay = 1 # milliseconds
     else:
         delay = 25 # milliseconds
     canvas.after(delay, timerFired) # pause for delay, call timerFired again
@@ -969,12 +971,12 @@ def drawBackground():
                             canvas.data.canvasHeight + borderAdjust,
                             fill=canvas.data.backgroundColorFill)
 def drawMap():
-    for row in range(canvas.data.rows):
-        for col in range(canvas.data.cols):
+    for row in xrange(canvas.data.rows):
+        for col in xrange(canvas.data.cols):
             if canvas.data.currentMap[row][col] == 1:
                 drawCell(row, col, canvas.data.currentMap[row][col])
-    for row in range(canvas.data.rows):
-        for col in range(canvas.data.cols):
+    for row in xrange(canvas.data.rows):
+        for col in xrange(canvas.data.cols):
             if canvas.data.currentMap[row][col] != 1:
                 drawCell(row, col, canvas.data.currentMap[row][col])
 
@@ -1051,7 +1053,7 @@ def drawSplashScreen():
                 "Select a Tower with 1, 2, 3, or 4",
                 "Click on the map to Place Selected Tower",
                 "Press the START GAME button to start"]
-    for i in range(len(instruct)):
+    for i in xrange(len(instruct)):
         y0 = yTop2 + spaceBetweenVertical * i
         canvas.create_text(canvas.data.canvasWidth/2 + 95, y0,
                            text=instruct[i], fill="white",
@@ -1085,7 +1087,7 @@ def drawTowerInfo():
                   spaceBetweenText, info, check, color)
 
 def towerInfo(edgeOfInfo, height, width, spaceBetweenText, info, check, color):
-    for row in range(len(info)):
+    for row in xrange(len(info)):
         y = height/1.7 + spaceBetweenText*row + edgeOfInfo
         if row == 0:
             canvas.create_text(width/2+20, height/1.7 + edgeOfInfo,
@@ -1103,7 +1105,7 @@ def drawTowerImages():
     height = canvas.data.canvasHeight
     width = canvas.data.spaceUI
     imageSpacing = 60
-    for i in range(len(canvas.data.imageTower)):
+    for i in xrange(len(canvas.data.imageTower)):
         y = height/1.7 + imageSpacing*i + edgeOfInfo
         if towerType == i:
             canvas.create_image(edgeOfInfo, y,
